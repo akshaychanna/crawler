@@ -11,7 +11,7 @@ class Adpter(object):
     def __init__(self,hash):
         self.url = hash['url']
         self.response_type = hash['response']
-        # self.es  = Elasticsearch(['http://localhost:9200/'], verify_certs=True)
+        self.es  = Elasticsearch(['http://localhost:9200/'], verify_certs=True)
     
 
     def process_target(self):
@@ -19,8 +19,11 @@ class Adpter(object):
         print(type(self.response_type))
         
         if self.response_type == 'html':
-            soup = BeautifulSoup((requests.get(self.url).content), 'html.parser')
+            r = requests.get(self.url)
+            print(r.status_code)
+            soup = BeautifulSoup((r.content), 'html.parser')
             # data_arr = []
+            print(soup.status_code)
             sections = (soup.find_all("div", class_= "vehicle-padding"))[0].find_all('section')
 
             for _listing in sections:  
@@ -31,8 +34,8 @@ class Adpter(object):
                 obj['interior'] = (_listing.div.tbody).find('td' , text = 'Interior:').find_next_siblings()[0].text
                 obj['condition'] = (_listing.div.tbody).find('td' , text = 'Condition:').find_next_siblings()[0].text
                 obj['odometer'] = int((_listing.div.tbody).find('td' , text = 'Odometer:').find_next_siblings()[0].text)
-                obj['link'] = self.url+_listing.find('a', href=True)['href']
-                
+                obj['link'] = self.url+_listing.find('a').get('href')
+                # pdb.set_trace()
                 data_arr.append(obj)
                 
             for i in data_arr:
