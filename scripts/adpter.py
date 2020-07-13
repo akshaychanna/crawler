@@ -9,7 +9,8 @@ import pprint
 
 class Adpter(object):
     def __init__(self,hash):
-        self.url = hash['url']
+        self.url = hash['url']+
+        
         self.response_type = hash['response']
         self.es  = Elasticsearch(['http://localhost:9200/'], verify_certs=True)
     
