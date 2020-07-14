@@ -10,10 +10,11 @@ if __name__ == '__main__':
     logging.addLevelName(logging.DEBUG, 'INFO')
     logging.info("scrapping started")
     adpter = Adpter({'url':"http://jkmitchell.app.dealerslinkclassifieds.com/web_display/condition/New/", 'response':"html"})
+    # adpter = Adpter({'url':"http://AFJKBJSVJDbkjsdvb vkasbjkvbjkvbskj vjkasbkjbvsfs", 'response':"html"})
     
     list_of_data = adpter.process_target()
     
-    pprint.pprint(list_of_data[0])
+    # pprint.pprint(list_of_data[0])
     
     # adpter.add_data_to_es(list_of_data)
     
