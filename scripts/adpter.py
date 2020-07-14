@@ -64,19 +64,44 @@ class Adpter(object):
             
                 
         else:
-            data = requests.get(self.url).json()
-            listings_data = data["vehicles"]
+            headers = {
+                'authority':'www.mazdausa.com',
+                'accept':'application/json, text/javascript, */*; q=0.01',
+                'x-requested-with':'XMLHttpRequest',
+                'user-agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36',
+                'content-type':'application/x-www-form-urlencoded; charset=UTF-8',
+                'origin':'https://www.mazdausa.com',
+                'sec-fetch-site':'same-origin',
+                'sec-fetch-mode':'cors',
+                'sec-fetch-dest':'empty',
+                'referer':'https://www.mazdausa.com/shopping-tools/inventory/results',
+                'accept-language':'en-GB,en-US;q=0.9,en;q=0.8'
+            }
+            
+            payload = {
+                    'ResultsPageSize':'12',
+                    'Vehicle%5BDealerId%5D%5B%5D':'61627',
+                    'Vehicle%5BStatus%5D%5B%5D':'11',
+                    'Vehicle%5BType%5D%5B%5D':'n',
+                    'Vehicle%5Bcond%5D%5B%5D':'n'
+            }
+            
+            # r = requests.post(url, data=json.dumps(data), headers=headers)
+            k = requests.post(self.url,data = payload, headers = headers).json()
+
+            # data = requests.get(self.url).json()
+            listings_count = k['response']['TotalVehicles']
         
-            for _listing in listings_data:
-                data_arr.append({
-                    'vin' : _listing['vin'],
-                    'condition' : _listing['condition'],
-                    'intransit' : _listing['intransit'],
-                    'exactMatch' : _listing['exactMatch'],
-                    'year' : _listing['year'],
-                    'make' : _listing['make'],
-                    'model' : _listing['model']
-                })    
+            # for _listing in listings_data:
+            #     data_arr.append({
+            #         'vin' : _listing['vin'],
+            #         'condition' : _listing['condition'],
+            #         'intransit' : _listing['intransit'],
+            #         'exactMatch' : _listing['exactMatch'],
+            #         'year' : _listing['year'],
+            #         'make' : _listing['make'],
+            #         'model' : _listing['model']
+            #     })    
             # return data_arr
         
         
